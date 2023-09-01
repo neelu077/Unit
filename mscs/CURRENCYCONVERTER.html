@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+
+        .converter {
+            text-align: center;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            margin-bottom: 10px;
+        }
+
+        label,
+        select,
+        input {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        button {
+            padding: 5px 10px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #555;
+        }
+
+        p#result {
+            margin-top: 10px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+    </style>
+    <title>Currency Converter</title>
+</head>
+
+<body>
+    <div class="converter">
+        <h1>Currency Converter</h1>
+        <label for="amount">Amount:</label>
+        <input type="number" id="amount" step="0.01" required>
+        <label for="from">From:</label>
+        <select id="from" required>
+            <option value="usd">USD</option>
+            <option value="eur">EUR</option>
+            <option value="gbp">GBP</option>
+        </select>
+        <label for="to">To:</label>
+        <select id="to" required>
+            <option value="usd">USD</option>
+            <option value="eur">EUR</option>
+            <option value="gbp">GBP</option>
+        </select>
+        <button id="convertButton">Convert</button>
+        <p id="result"></p>
+    </div>
+
+    <script>
+        const convertButton = document.getElementById('convertButton');
+        const amountInput = document.getElementById('amount');
+        const fromSelect = document.getElementById('from');
+        const toSelect = document.getElementById('to');
+        const resultDisplay = document.getElementById('result');
+
+        convertButton.addEventListener('click', convertCurrency);
+
+        const exchangeRates = {
+            usd: { eur: 0.85, gbp: 0.73 },
+            eur: { usd: 1.18, gbp: 0.86 },
+            gbp: { usd: 1.37, eur: 1.16 }
+        };
+
+        function convertCurrency() {
+            const amount = parseFloat(amountInput.value);
+            const fromCurrency = fromSelect.value;
+            const toCurrency = toSelect.value;
+
+            if (isNaN(amount)) {
+                resultDisplay.textContent = 'Please enter a valid amount.';
+                return;
+            }
+
+            if (fromCurrency === toCurrency) {
+                resultDisplay.textContent = 'Please select different currencies.';
+                return;
+            }
+
+            const convertedAmount = amount * exchangeRates[fromCurrency][toCurrency];
+            resultDisplay.textContent = `${amount.toFixed(2)} ${fromCurrency} is ${convertedAmount.toFixed(2)} ${toCurrency}.`;
+        }
+
+    </script>
+</body>
+
+</html>
